@@ -7,7 +7,7 @@ export const UserSchema = new mongose.Schema({
   password: {type: String, required: true},
 });
 
-
+// to jest Dto
 export interface User extends mongose.Document{
   id: string;
   name: string;
