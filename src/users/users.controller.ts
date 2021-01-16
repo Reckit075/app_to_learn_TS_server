@@ -7,20 +7,29 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   // Zwrócic kod HTTP flase w sytuacji niepowodzenia true w sytuacji powodzenia
-
+  // Registration
   @Post('register')
   async addUser(
     @Body('name') prodName: string,
     @Body('password') prodPassword: string,
   ) {
-    const generatedId = await this.userService.insertUser(prodName, prodPassword);
-    if(generatedId === undefined) throw new BadRequestException('User was not added');
-    else return {succes: true};
+    const serviceResponse = await this.userService.registerUser(prodName, prodPassword);
+    throw serviceResponse;
   }
 
   @Get()
   async getAllUsers() {
     const users = await this.userService.getUsers();
     return users;
+  }
+
+  // Login
+  @Post('login')
+  async loginUser(
+    @Body('name') loginName: string,
+    @Body('password') loginPassword: string,
+  ) {
+    const serviceResponse = await this.userService.loginUser(loginName, loginPassword);
+    throw serviceResponse;
   }
 }
