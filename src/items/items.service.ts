@@ -27,12 +27,15 @@ export class ItemsService {
 
   async getItems() {
     try {
-      const products = await this.itemModel.find().exec();
-      return products.map((prod) => ({
-        id: prod.id,
-        title: prod.title,
-        author: prod.author,
-        description: prod.description,
+      const items = await this.itemModel.find().exec();
+      if (items === []) {
+        return new HttpException('There is no items', 404);
+      }
+      return items.map((item) => ({
+        id: item.id,
+        title: item.title,
+        author: item.author,
+        description: item.description,
       }));
     } catch (error) {
       console.error(error);

@@ -19,8 +19,8 @@ export class UsersController {
 
   @Get()
   async getAllUsers() {
-    const users = await this.userService.getUsers();
-    return users;
+    const response = await this.userService.getUsers();
+    return response;
   }
 
   // Login

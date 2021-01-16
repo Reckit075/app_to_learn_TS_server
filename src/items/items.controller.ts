@@ -21,7 +21,7 @@ export class ItemsController {
 
   @Get()
   async getAllItems() {
-    const users = await this.itemService.getItems();
-    return users;
+    const response = await this.itemService.getItems();
+    return response;
   }
 }

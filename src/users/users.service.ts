@@ -1,4 +1,4 @@
-import { Injectable, HttpException, BadRequestException } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { UserDto } from '../models/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -23,8 +23,9 @@ export class UsersService {
         await newUser.save();
         return new HttpException('User was created', 200);
       } else {
-        return new BadRequestException(
+        return new HttpException(
           'User with that login or password exists',
+          404,
         );
       }
     } catch (error) {
@@ -34,11 +35,14 @@ export class UsersService {
 
   async getUsers() {
     try {
-      const products = await this.userModel.find().exec();
-      return products.map((prod) => ({
-        id: prod.id,
-        name: prod.name,
-        password: prod.password,
+      const users = await this.userModel.find().exec();
+      if (users === []) {
+        return new HttpException('There is no users', 404);
+      }
+      return users.map((user) => ({
+        id: user.id,
+        name: user.name,
+        password: user.password,
       }));
     } catch (error) {
       console.error(error);
@@ -51,8 +55,9 @@ export class UsersService {
         // Poinformowanie o tym że użytkownik jest zalogowany
         return new HttpException('You logged in', 200);
       } else {
-        return new BadRequestException(
+        return new HttpException(
           'User with that login or password not exists',
+          404,
         );
       }
     } catch (error) {
