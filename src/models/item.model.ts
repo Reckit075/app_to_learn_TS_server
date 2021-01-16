@@ -1,17 +1,26 @@
-/* eslint-disable prettier/prettier */
-import * as mongose from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
+import { CollectionDto } from './collection.model';
 
+export type ItemDocument = Item & mongoose.Document;
+@Schema()
+export class Item {
+  @Prop({ required: true })
+  title: string;
+  @Prop({ required: true })
+  author: string;
+  @Prop({ required: true })
+  description: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Collection' })
+  collectionId: CollectionDto;
+}
 
-export const ItemSchema = new mongose.Schema({
-  title: {type: String, required: true},
-  author: {type: String, required: true},
-  description: {type: String, required: true},
-});
+export const ItemSchema = SchemaFactory.createForClass(Item);
 
-// to jest Dto
-export interface Item extends mongose.Document{
+export interface ItemDto extends mongoose.Document {
   id: string;
   title: string;
   author: string;
   description: string;
+  collectionId: string;
 }

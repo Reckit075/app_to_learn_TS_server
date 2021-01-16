@@ -1,13 +1,15 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Item } from '../models/item.model';
+import { ItemDto } from '../models/item.model';
 
 @Injectable()
 export class ItemsService {
-  private users: Item[] = [];
+  private users: ItemDto[] = [];
   private test: any;
-  constructor(@InjectModel('Items') private readonly itemModel: Model<Item>) {}
+  constructor(
+    @InjectModel('Items') private readonly itemModel: Model<ItemDto>,
+  ) {}
 
   async createItem(title: string, author: string, description: string) {
     try {

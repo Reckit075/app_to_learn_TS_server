@@ -5,8 +5,6 @@ import { ItemsService } from './items.service';
 export class ItemsController {
   constructor(private readonly itemService: ItemsService) {}
 
-  // Zwrócic kod HTTP flase w sytuacji niepowodzenia true w sytuacji powodzenia
-  // Registration
   @Post('add')
   async addItem(
     @Body('title') prodTitle: string,
