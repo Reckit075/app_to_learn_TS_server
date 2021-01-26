@@ -1,5 +1,13 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, HttpCode,HttpStatus, Response } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Response,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -8,10 +16,10 @@ export class UsersController {
 
   @Post('register')
   async addUser(
-    @Body('name') Name: string,
-    @Body('password') Password: string,
+    @Body('name') name: string,
+    @Body('password') password: string,
   ) {
-    const serviceResponse = await this.userService.registerUser(Name, Password);
+    const serviceResponse = await this.userService.registerUser(name, password);
     throw serviceResponse;
   }
 
@@ -28,7 +36,10 @@ export class UsersController {
     @Body('name') loginName: string,
     @Body('password') loginPassword: string,
   ) {
-    const serviceResponse = await this.userService.loginUser(loginName, loginPassword);
+    const serviceResponse = await this.userService.loginUser(
+      loginName,
+      loginPassword,
+    );
     throw serviceResponse;
   }
 }
