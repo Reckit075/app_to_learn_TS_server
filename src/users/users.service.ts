@@ -11,12 +11,11 @@ export class UsersService {
   async registerUser(name: string, password: string) {
     try {
       const nameCondition = await this.userModel.findOne({ name }).exec();
-      const passCondition = await this.userModel.findOne({ password }).exec();
       const newUser = new this.userModel({
         name,
         password,
       });
-      if (nameCondition === null && passCondition === null) {
+      if (nameCondition === null) {
         await newUser.save();
         return new HttpException('User was created', 200);
       } else {
