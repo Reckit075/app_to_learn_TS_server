@@ -7,16 +7,16 @@ export class ItemsController {
 
   @Post('add')
   async addItem(
-    @Body('title') prodTitle: string,
-    @Body('author') prodAuthor: string,
-    @Body('description') prodDescription: string,
+    @Body('title') Title: string,
+    @Body('author') Author: string,
+    @Body('description') Description: string,
   ) {
     const serviceResponse = await this.itemService.createItem(
-      prodTitle,
-      prodAuthor,
-      prodDescription,
+      Title,
+      Author,
+      Description,
     );
-    throw serviceResponse;
+    return serviceResponse;
   }
 
   @Get()

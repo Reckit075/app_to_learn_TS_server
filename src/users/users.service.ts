@@ -1,15 +1,12 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import { UserDto } from '../models/user.model';
+import { User } from '../models/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class UsersService {
-  private users: UserDto[] = [];
-  private test: any;
-  constructor(
-    @InjectModel('Users') private readonly userModel: Model<UserDto>,
-  ) {}
+  private users: User[] = [];
+  constructor(@InjectModel('Users') private readonly userModel: Model<User>) {}
 
   async registerUser(name: string, password: string) {
     try {
@@ -30,6 +27,7 @@ export class UsersService {
       }
     } catch (error) {
       console.error(error);
+      return new HttpException(error, 400);
     }
   }
 
@@ -46,6 +44,7 @@ export class UsersService {
       }));
     } catch (error) {
       console.error(error);
+      return new HttpException(error, 400);
     }
   }
 
@@ -62,6 +61,7 @@ export class UsersService {
       }
     } catch (error) {
       console.error(error);
+      return new HttpException(error, 400);
     }
   }
 }

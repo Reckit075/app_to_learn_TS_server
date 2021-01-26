@@ -12,8 +12,7 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-export interface UserDto extends mongoose.Document{
+export interface User extends mongoose.Document{
   id: string;
   name: string;
   password: string;

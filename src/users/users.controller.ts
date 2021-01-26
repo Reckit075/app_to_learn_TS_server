@@ -1,26 +1,25 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpCode,HttpStatus, Response } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  // Zwrócic kod HTTP flase w sytuacji niepowodzenia true w sytuacji powodzenia
-  // Registration
   @Post('register')
   async addUser(
-    @Body('name') prodName: string,
-    @Body('password') prodPassword: string,
+    @Body('name') Name: string,
+    @Body('password') Password: string,
   ) {
-    const serviceResponse = await this.userService.registerUser(prodName, prodPassword);
+    const serviceResponse = await this.userService.registerUser(Name, Password);
     throw serviceResponse;
   }
 
   @Get()
-  async getAllUsers() {
+  @HttpCode(220)
+  async getAllUsers(@Response() res: any) {
     const response = await this.userService.getUsers();
-    return response;
+    return res.status(HttpStatus.OK).json(response);
   }
 
   // Login
