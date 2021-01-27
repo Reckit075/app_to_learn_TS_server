@@ -1,26 +1,33 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, BadRequestException} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Response,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  // Zwrócic kod HTTP flase w sytuacji niepowodzenia true w sytuacji powodzenia
-  // Registration
   @Post('register')
   async addUser(
-    @Body('name') prodName: string,
-    @Body('password') prodPassword: string,
+    @Body('name') name: string,
+    @Body('password') password: string,
   ) {
-    const serviceResponse = await this.userService.registerUser(prodName, prodPassword);
+    const serviceResponse = await this.userService.registerUser(name, password);
     throw serviceResponse;
   }
 
   @Get()
-  async getAllUsers() {
-    const users = await this.userService.getUsers();
-    return users;
+  @HttpCode(220)
+  async getAllUsers(@Response() res: any) {
+    const response = await this.userService.getUsers();
+    return res.status(HttpStatus.OK).json(response);
   }
 
   // Login
@@ -29,7 +36,10 @@ export class UsersController {
     @Body('name') loginName: string,
     @Body('password') loginPassword: string,
   ) {
-    const serviceResponse = await this.userService.loginUser(loginName, loginPassword);
+    const serviceResponse = await this.userService.loginUser(
+      loginName,
+      loginPassword,
+    );
     throw serviceResponse;
   }
 }
