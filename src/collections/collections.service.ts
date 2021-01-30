@@ -1,21 +1,23 @@
-import { HttpException, Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { Collection } from "src/models/collection.model";
-
-
+import { HttpException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Collection } from 'src/models/collection.model';
 
 @Injectable()
 export class CollectionsService {
-    private users: Collection[] = [];
-    private test: any;
-   constructor(@InjectModel('Collections') private readonly collectionModel: Model<Collection>) {}
+  private users: Collection[] = [];
+  private test: any;
+  constructor(
+    @InjectModel('Collections')
+    private readonly collectionModel: Model<Collection>,
+  ) {}
 
-  async createCollection(title: string, description: string) {
+  async createCollection(title: string, description: string, ownerID: string) {
     try {
       const newCollection = new this.collectionModel({
         title,
         description,
+        ownerID,
       });
       await newCollection.save();
       return new HttpException('Collection was created', 200);
@@ -25,11 +27,13 @@ export class CollectionsService {
     }
   }
 
-  async getCollections() {
+  async getCollections(ownerID: string) {
     try {
-      const collections = await this.collectionModel.find().exec();
+      const collections = await this.collectionModel
+        .find({ ownerID: ownerID })
+        .exec();
       if (collections === []) {
-        return new HttpException('There is no items', 404);
+        return new HttpException('There is no collections', 404);
       }
       return collections.map((collection) => ({
         id: collection.id,
