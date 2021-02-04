@@ -21,6 +21,7 @@ export class CollectionsController {
 
   @Get()
   async getAllCollections(@Query('ownerID') OwnerID: string) {
+    console.log(OwnerID);
     const response = await this.collectionsService.getCollections(OwnerID);
     return response;
   }
