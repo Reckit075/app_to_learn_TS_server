@@ -14,7 +14,7 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @Post('register')
+  @Post()
   async addUser(
     @Body('name') name: string,
     @Body('password') password: string,

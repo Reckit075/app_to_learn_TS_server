@@ -9,12 +9,19 @@ export class ItemsService {
   private test: any;
   constructor(@InjectModel('Items') private readonly itemModel: Model<Item>) {}
 
-  async createItem(title: string, author: string, description: string) {
+  async createItem(
+    title: string,
+    author: string,
+    description: string,
+    collectionID: string,
+  ) {
     try {
+      console.log(collectionID);
       const newItem = new this.itemModel({
         title,
         author,
         description,
+        collectionID,
       });
       await newItem.save();
       return new HttpException('Item was created', 200);
@@ -24,9 +31,11 @@ export class ItemsService {
     }
   }
 
-  async getItems() {
+  async getItems(collectionID: string) {
     try {
-      const items = await this.itemModel.find().exec();
+      const items = await this.itemModel
+        .find({ collection: collectionID })
+        .exec();
       if (items === []) {
         return new HttpException('There is no items', 404);
       }
