@@ -50,8 +50,7 @@ export class UsersService {
   async loginUser(name: string, password: string) {
     try {
       if ((await this.userModel.findOne({ name, password }).exec()) !== null) {
-        // Poinformowanie o tym że użytkownik jest zalogowany
-        return new HttpException('You logged in', 200);
+        return await this.userModel.findOne({ name, password }).exec();
       } else {
         return new HttpException(
           'User with that login or password not exists',
