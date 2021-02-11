@@ -40,6 +40,6 @@ export class UsersController {
       loginName,
       loginPassword,
     );
-    throw serviceResponse;
+    return serviceResponse;
   }
 }
